@@ -9,21 +9,17 @@ import {
 	browserHistory
 } from 'react-router';
 
-import { redirectIfUnauth } from '../lib/router';
+import RequiredAuth from './required-auth';
 
 import IndexPage from './pages/index-page';
 import UsersPage from './pages/users-page';
 import LoginPage from './pages/login-page';
 
-function requireAuth(nextState: RouterState, replace: RedirectFunction) {
-	redirectIfUnauth(nextState.location, replace);
-}
-
 export default class App extends React.Component<{}, {}> {
 	render() {
 		return (
 			<Router history={ browserHistory }>
-				<Route path="/" onEnter={ requireAuth }>
+				<Route path="/" component={ RequiredAuth }>
 					<IndexRoute component={ IndexPage } />
 					<Route path="/users" component={ UsersPage } />
 				</Route>

@@ -8,7 +8,7 @@ import LoginForm, { LoginFormData } from '../forms/login-form';
 import { Accounts } from 'meteor/accounts-base';
 
 import { Credentials, createAndLoginUser } from '../../api/users';
-import { redirectToRetpath } from '../../lib/router';
+import { AuthRedirectQuery } from '../required-auth';
 
 interface LoginPageProps {
 	router: IRouter & RouterState;
@@ -35,7 +35,9 @@ class LoginPage extends React.Component<LoginPageProps, {}> {
 		})
 		.then(() => {
 			const { router } = this.props;
-			redirectToRetpath(router.location, router.replace);
+			const { location } = router;
+			const query = location.query as AuthRedirectQuery;
+			router.replace(query && query.retpath || '/');
 		})
 		.catch(Meteor.Error, (error) => {
 			console.log(error);

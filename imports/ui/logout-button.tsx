@@ -1,19 +1,9 @@
 import * as React from 'react';
 import { Meteor } from 'meteor/meteor';
-import { IRouter, RouterState, withRouter } from 'react-router';
-import { redirectIfUnauth } from '../lib/router';
 
-interface Props {
-	router: IRouter & RouterState;
-}
-
-class LogoutButton extends React.Component<Props, {}> {
+export default class LogoutButton extends React.Component<{}, {}> {
 	handleClick = () => {
-		const { router } = this.props;
-		Meteor.logout(() => {
-			redirectIfUnauth(router.location, router.replace);
-		});
-
+		Meteor.logout();
 	}
 
 	render() {
@@ -25,4 +15,3 @@ class LogoutButton extends React.Component<Props, {}> {
 	}
 }
 
-export default withRouter<{}>(LogoutButton);
