@@ -4,9 +4,15 @@ import * as Promise from 'bluebird';
 
 Promise.config({ cancellation: true });
 
+export type Role = 'user' | 'admin';
+
 export interface Credentials {
 	username: string;
 	password: string;
+}
+
+export interface User extends Credentials {
+	roles?: Role[];
 }
 
 export function createAndLoginUser(credentials: Credentials): Promise<void> {
@@ -34,4 +40,3 @@ export function createAndLoginUser(credentials: Credentials): Promise<void> {
 		.then(resolve, reject);
 	});
 }
-

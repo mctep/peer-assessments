@@ -1,14 +1,10 @@
-import { Meteor } from 'meteor/meteor';
-import { Accounts } from 'meteor/accounts-base';
-
-export default function createAdminUser(data: { password: string }) {
+export default function createAdminUser(): void {
 	if (Meteor.users.find().count() !== 0) { return; }
 
-	Accounts.createUser({
-		username: 'admin',
-		password: data.password,
-		profile: {
-			admin: true
-		}
-	});
+	const { username, password } = Meteor.settings['admin'];
+
+	const userId = Accounts.createUser({ username, password });
+
+	Roles.removeUsersFromRoles(userId, ['user']);
+	Roles.addUsersToRoles(userId, 'admin');
 }

@@ -1,7 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { Credentials } from '../imports/api/users';
+import { User, Role } from '../imports/api/users';
 import createAdminUser from './create-admin-user';
+
+Meteor.users.deny({
+	insert: () => true,
+	update: () => true,
+	remove: () => true
+});
 
 Meteor.methods({
 	'accounts.isUsernameExists'(username: string) {
@@ -9,9 +15,15 @@ Meteor.methods({
 	}
 });
 
+Accounts.onCreateUser((options, user: User) => {
+	user.roles = ['user'];
+	return user;
+});
+
+Meteor.publish('users', function() {
+	return Meteor.users.find({ roles: { $elemMatch: { $eq: 'user' } } });
+});
+
 Meteor.startup(() => {
-	// of course default password should not be in source code
-	// it would be in process environment variable
-	// or some local file which ignored by git
-	createAdminUser({ password: 'admin' });
+	createAdminUser();
 });

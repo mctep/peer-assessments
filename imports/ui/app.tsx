@@ -12,6 +12,7 @@ import {
 import { redirectIfUnauth } from '../lib/router';
 
 import IndexPage from './pages/index-page';
+import UsersPage from './pages/users-page';
 import LoginPage from './pages/login-page';
 
 function requireAuth(nextState: RouterState, replace: RedirectFunction) {
@@ -24,7 +25,7 @@ export default class App extends React.Component<{}, {}> {
 			<Router history={ browserHistory }>
 				<Route path="/" onEnter={ requireAuth }>
 					<IndexRoute component={ IndexPage } />
-					<Route path="/users" component={ IndexPage } />
+					<Route path="/users" component={ UsersPage } />
 				</Route>
 				<Route path="/login" component={ LoginPage } />
 			</Router>
