@@ -17,7 +17,7 @@ interface RouterProps {
 	router: IRouter & RouterState;
 }
 
-function subscrptions(): SubsProps {
+function subscriptions(): SubsProps {
 	return {
 		loggingIn: Meteor.loggingIn(),
 		user: Meteor.user()
@@ -71,5 +71,5 @@ class RequiredAuth extends React.Component<Props & SubsProps & RouterProps, {}> 
 	}
 }
 
-export default createContainer(subscrptions, withRouter(RequiredAuth));
+export default createContainer(subscriptions, withRouter(RequiredAuth));
 
