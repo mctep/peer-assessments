@@ -16,7 +16,7 @@ interface LoginPageProps {
 }
 
 class LoginPage extends React.Component<LoginPageProps, {}> {
-	private loggingIn: Promise<void>;
+	private loggingIn?: Promise<void>;
 
 	componentWillUnmount() {
 		if (this.loggingIn) {
