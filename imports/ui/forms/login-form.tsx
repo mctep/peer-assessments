@@ -1,12 +1,12 @@
 import * as React from 'react';
 
 export interface LoginFormData {
-	email: string;
+	username: string;
 	password: string;
 }
 
 export interface LoginFormProps {
-	onSubmit(data: LoginFormData): void;
+	onSubmit: (data: LoginFormData) => void;
 }
 
 export default class LoginForm extends React.Component<LoginFormProps, LoginFormData> {
@@ -14,25 +14,23 @@ export default class LoginForm extends React.Component<LoginFormProps, LoginForm
 		super (props);
 
 		this.state = {
-			email: '',
+			username: '',
 			password: ''
 		};
-
-		this.handleFormSubmit = this.handleFormSubmit.bind(this);
 	}
 
-	handleFormSubmit(e: React.SyntheticEvent) {
+	handleFormSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
 		this.props.onSubmit(this.state);
 	}
 
-	handleEmailChange(e: React.FormEvent) {
-		const email = (e.target as HTMLInputElement).value;
-		this.setState({ ...this.state, email });
+	handleUsernameChange = (e: React.FormEvent) => {
+		const username = (e.target as HTMLInputElement).value;
+		this.setState({ ...this.state, username });
 	}
 
-	handlePasswordChange(e: React.FormEvent) {
+	handlePasswordChange = (e: React.FormEvent) => {
 		const password = (e.target as HTMLInputElement).value;
 		this.setState({ ...this.state, password });
 	}
@@ -43,9 +41,9 @@ export default class LoginForm extends React.Component<LoginFormProps, LoginForm
 				<div>
 					<input
 						type="text"
-						name="email"
-						value={ this.state.email }
-						onChange={ this.handleEmailChange }
+						name="username"
+						value={ this.state.username }
+						onChange={ this.handleUsernameChange }
 					/>
 				</div>
 				<div>

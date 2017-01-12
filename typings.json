@@ -3,7 +3,10 @@
     "meteor": "registry:env/meteor#1.3.0+20160830163906"
   },
   "dependencies": {
+    "bluebird": "registry:npm/bluebird#3.4.1+20160909132857",
     "react": "registry:npm/react#15.0.1+20170104200836",
-    "react-dom": "registry:npm/react-dom#15.0.1+20160826174104"
+    "react-dom": "registry:npm/react-dom#15.0.1+20160826174104",
+    "react-router": "registry:npm/react-router#2.4.0+20160915183637",
+    "react-router-patch": "file:custom-typings/react-router-patch.d.ts"
   }
 }

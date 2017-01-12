@@ -7,6 +7,10 @@
     "emitDecoratorMetadata": true,
     "sourceMap": true,
     "compileOnSave": false,
-    "jsx": "react"
+    "jsx": "react",
+    "lib": [
+      "dom",
+      "es2015"
+    ]
   }
 }
