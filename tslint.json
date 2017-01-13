@@ -103,7 +103,6 @@
         "adjacent-overload-signatures": true,
         "member-access": true,
         "no-empty-interface": true,
-        "no-inferrable-types": [true],
         "no-magic-numbers": true,
         "no-namespace": true,
         "no-reference": true,
