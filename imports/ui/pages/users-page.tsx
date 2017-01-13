@@ -15,14 +15,15 @@ function subscribe(): Props {
 }
 
 class UsersPage extends React.Component<Props, void> {
-	renderUsers(): JSX.Element[] {
-		return this.props.users.map((user) => (
+	private renderUsers(): JSX.Element[] {
+		return this.props.users.map((user: Meteor.User) => (
 			<li key={ user._id }>
 				{ user.username }
 			</li>
 		));
 	}
-	render(): JSX.Element {
+
+	public render(): JSX.Element {
 		return (
 			<div>
 				{ this.renderUsers() }

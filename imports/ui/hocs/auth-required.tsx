@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { withRouter, IRouter, RouterState } from 'react-router';
 import { withUser, IWithUser, ComponentConstructor } from './with-user';
-import { Role } from '../../api/users';
+import { Role, User } from '../../api/users';
 
 import Loader from '../components/loader';
 
@@ -13,26 +13,37 @@ interface RouterProps {
 	router: IRouter & RouterState;
 }
 
+export interface Location {
+	pathname?: string;
+	search?: string;
+	hash?: string;
+	query?: {};
+}
+
 export interface AuthRedirectQuery {
 	retpath?: string;
 }
 
-function redirectToLogin(router): void {
+function redirectToLogin(router: IRouter & RouterState): void {
 	const query: AuthRedirectQuery = {};
-	const { location } = router;
-	const { pathname, search, hash } = location;
-	const retpath = [pathname, search, hash].filter(Boolean).join('');
+	const location: Location = router.location;
+
+	const retpath: string = [
+		location.pathname,
+		location.search,
+		location.hash
+	].filter(Boolean).join('');
 
 	if (retpath && retpath !== '/') { query.retpath = retpath; };
 
 	router.replace({ pathname: '/login', query });
 }
 
-function redirectToNotFound(router): void {
+function redirectToNotFound(router: IRouter): void {
 	router.replace('/page-not-found');
 }
 
-export default function authRequired(Comp: ComponentConstructor<any>, ...roles: Role[]): ComponentConstructor<any> {
+export default function authRequired(Comp: ComponentConstructor<{}>, ...roles: Role[]): ComponentConstructor<{}> {
 	/**
 	 * Component that checks user loading and make redirect to login if neccessary.
 	 * We cannot use Route.onEnter hook cause it is not reactive
@@ -40,7 +51,9 @@ export default function authRequired(Comp: ComponentConstructor<any>, ...roles: 
 	 */
 	class AuthRequired extends React.Component<Props & IWithUser & RouterProps, {}> {
 		private static redirect(props: IWithUser & RouterProps): void {
-			const { loggingIn, user, router } = props;
+			const loggingIn: boolean = props.loggingIn;
+			const user: User = props.user;
+			const router: IRouter & RouterState = props.router;
 
 			if (loggingIn) { return; }
 
@@ -53,15 +66,15 @@ export default function authRequired(Comp: ComponentConstructor<any>, ...roles: 
 			redirectToNotFound(router);
 		}
 
-		componentDidMount(): void {
+		private componentDidMount(): void {
 			AuthRequired.redirect(this.props);
 		}
 
-		componentWillReceiveProps(props: IWithUser & RouterProps): void {
+		private componentWillReceiveProps(props: IWithUser & RouterProps): void {
 			AuthRequired.redirect(props);
 		}
 
-		render(): JSX.Element {
+		public render(): JSX.Element {
 			// no information about user, so just show loader
 			if (this.props.loggingIn) {
 				return <Loader />;
@@ -76,5 +89,5 @@ export default function authRequired(Comp: ComponentConstructor<any>, ...roles: 
 		}
 	}
 
-	return withUser(withRouter(AuthRequired));
+	return withUser<{}, IWithUser>(withRouter(AuthRequired));
 }

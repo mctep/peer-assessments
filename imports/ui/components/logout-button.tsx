@@ -3,11 +3,11 @@ import { Meteor } from 'meteor/meteor';
 import { withUser, IWithUser } from '../hocs/with-user';
 
 class LogoutButton extends React.Component<IWithUser, void> {
-	handleClick = (): void => {
+	private handleClick = (): void => {
 		Meteor.logout();
 	}
 
-	render(): JSX.Element {
+	public render(): JSX.Element {
 		if (!this.props.user) { return null; }
 
 		return (

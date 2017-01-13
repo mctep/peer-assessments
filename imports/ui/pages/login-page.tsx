@@ -8,7 +8,7 @@ import LoginForm, { LoginFormData } from '../forms/login-form';
 import { Accounts } from 'meteor/accounts-base';
 
 import { Credentials, createAndLoginUser } from '../../api/users';
-import { AuthRedirectQuery } from '../hocs/auth-required';
+import { AuthRedirectQuery, Location } from '../hocs/auth-required';
 
 interface LoginPageProps {
 	router: IRouter & RouterState;
@@ -18,14 +18,15 @@ interface LoginPageProps {
 class LoginPage extends React.Component<LoginPageProps, void> {
 	private loggingIn?: Promise<void>;
 
-	componentWillUnmount(): void {
+	private componentWillUnmount(): void {
 		if (this.loggingIn) {
 			this.loggingIn.cancel();
 		}
 	}
 
-	handleFormSubmit = (data: LoginFormData): void => {
-		const { username, password } = data;
+	private handleFormSubmit = (data: LoginFormData): void => {
+		const username: string = data.username;
+		const password: string = data.password;
 
 		this.loggingIn = createAndLoginUser(data);
 
@@ -34,17 +35,18 @@ class LoginPage extends React.Component<LoginPageProps, void> {
 			delete this.loggingIn;
 		})
 		.then(() => {
-			const { router } = this.props;
-			const { location } = router;
-			const query = location.query as AuthRedirectQuery;
+			const router: IRouter & RouterState = this.props.router;
+			const location: Location = router.location;
+
+			const query: AuthRedirectQuery = location.query as AuthRedirectQuery;
 			router.replace(query && query.retpath || '/');
 		})
-		.catch(Meteor.Error, (error) => {
+		.catch(Meteor.Error, (error: Meteor.Error) => {
 			console.log(error);
 		});
 	}
 
-	render(): JSX.Element {
+	public render(): JSX.Element {
 		return (
 			<div>
 				<h1>Login</h1>

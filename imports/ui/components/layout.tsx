@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { Link, IndexLink } from 'react-router';
 import { withUser, IWithUser } from '../hocs/with-user';
+import { User } from '../../api/users';
 import Logotype from '../components/logotype';
 import LogoutButton from '../components/logout-button';
 
 class Layout extends React.Component<IWithUser, void> {
-	static renderAdminMenu(): JSX.Element {
+	private static renderAdminMenu(): JSX.Element {
 		return (
 			<ul>
 				<li><Link to="/users">Users</Link></li>
@@ -14,15 +15,15 @@ class Layout extends React.Component<IWithUser, void> {
 		);
 	}
 
-	static renderUserMenu(): JSX.Element {
+	private static renderUserMenu(): JSX.Element {
 		return (
 			<ul>
 			</ul>
 		);
 	}
 
-	renderMenu(): JSX.Element {
-		const { user } = this.props;
+	private renderMenu(): JSX.Element {
+		const user: User = this.props.user;
 
 		if (!user) { return null; }
 
@@ -33,15 +34,15 @@ class Layout extends React.Component<IWithUser, void> {
 		return Layout.renderUserMenu();
 	}
 
-	renderLogoutButton(): JSX.Element {
-		const { user } = this.props;
+	private renderLogoutButton(): JSX.Element {
+		const user: User = this.props.user;
 
 		if (!user) { return null; }
 
 		return <LogoutButton />;
 	}
 
-	render(): JSX.Element {
+	public render(): JSX.Element {
 		return (
 			<div>
 				<div>

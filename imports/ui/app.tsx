@@ -18,7 +18,7 @@ import LoginPage from './pages/login-page';
 import NotFoundPage from './pages/not-found-page';
 
 export default class App extends React.Component<void, void> {
-	render(): JSX.Element {
+	public render(): JSX.Element {
 		return (
 			<Router history={ browserHistory }>
 				<Route path="/">

@@ -16,15 +16,18 @@ export interface User extends Meteor.User {
 }
 
 export function createAndLoginUser(credentials: Credentials): Promise<void> {
-	const { username, password } = credentials;
+	const username: string = credentials.username;
+	const password: string = credentials.password;
 
-	return new Promise<void>((resolve, reject, onCancel) => {
-		let canceled = false;
+	return new Promise<void>((resolve: () => void, reject: () => void, onCancel: (cb: () => void) => void): void => {
+		let canceled: boolean;
+		canceled = false;
+
 		onCancel(() => { canceled = true; });
 
 		Promise.promisify<boolean, string, string>
 		(Meteor.call)('accounts.isUsernameExists', credentials.username)
-		.then((exists) => {
+		.then((exists: boolean) => {
 			if (canceled) { return; }
 			if (exists) { return; }
 

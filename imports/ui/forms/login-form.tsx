@@ -10,7 +10,7 @@ export interface LoginFormProps {
 }
 
 export default class LoginForm extends React.Component<LoginFormProps, LoginFormData> {
-	constructor(props) {
+	constructor(props: LoginFormProps) {
 		super (props);
 
 		this.state = {
@@ -19,23 +19,23 @@ export default class LoginForm extends React.Component<LoginFormProps, LoginForm
 		};
 	}
 
-	handleFormSubmit = (e: React.FormEvent) => {
+	private handleFormSubmit = (e: React.FormEvent): void => {
 		e.preventDefault();
 
 		this.props.onSubmit(this.state);
 	}
 
-	handleUsernameChange = (e: React.FormEvent) => {
-		const username = (e.target as HTMLInputElement).value;
+	private handleUsernameChange = (e: React.FormEvent): void => {
+		const username: string = (e.target as HTMLInputElement).value;
 		this.setState({ ...this.state, username });
 	}
 
-	handlePasswordChange = (e: React.FormEvent) => {
-		const password = (e.target as HTMLInputElement).value;
+	private handlePasswordChange = (e: React.FormEvent): void => {
+		const password: string = (e.target as HTMLInputElement).value;
 		this.setState({ ...this.state, password });
 	}
 
-	render() {
+	public render(): JSX.Element {
 		return (
 			<form onSubmit={ this.handleFormSubmit }>
 				<div>

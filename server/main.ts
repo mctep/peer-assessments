@@ -4,23 +4,23 @@ import { User, Role } from '../imports/api/users';
 import createAdminUser from './create-admin-user';
 
 Meteor.users.deny({
-	insert: () => true,
-	update: () => true,
-	remove: () => true
+	insert: (): boolean => true,
+	update: (): boolean => true,
+	remove: (): boolean => true
 });
 
 Meteor.methods({
-	'accounts.isUsernameExists'(username: string) {
+	'accounts.isUsernameExists'(username: string): boolean {
 		return !!Accounts.findUserByUsername(username);
 	}
 });
 
-Accounts.onCreateUser((options, user: User) => {
+Accounts.onCreateUser((options: {}, user: User) => {
 	user.roles = ['user'];
 	return user;
 });
 
-Meteor.publish('users', function() {
+Meteor.publish('users', () => {
 	return Meteor.users.find({ roles: { $elemMatch: { $eq: 'user' } } });
 });
 
