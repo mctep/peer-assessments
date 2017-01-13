@@ -20,7 +20,8 @@
         ],
         "quotemark": [
             true,
-            "single"
+            "single",
+            "jsx-double"
         ],
         "semicolon": [
             true,
@@ -65,7 +66,8 @@
         ],
         "quotemark": [
             true,
-            "single"
+            "single",
+            "jsx-double"
         ],
         "semicolon": [
             true,
@@ -96,6 +98,27 @@
             "check-operator",
             "check-separator",
             "check-type"
-        ]
+        ],
+        "no-any": true,
+        "adjacent-overload-signatures": true,
+        "member-access": true,
+        "no-empty-interface": true,
+        "no-inferrable-types": [true],
+        "no-magic-numbers": true,
+        "no-namespace": true,
+        "no-reference": true,
+        "no-var-requires": true,
+        "only-arrow-functions": [true, "allow-named-functions"],
+        "typedef": [
+          true,
+          "call-signature",
+          "arrow-call-signature",
+          "parameter",
+          "arrow-parameter",
+          "property-declaration",
+          "variable-declaration",
+          "member-variable-declaration"
+        ],
+        "unified-signatures": true
     }
 }

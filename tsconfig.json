@@ -1,10 +1,16 @@
 {
-  "module": "commonjs",
-  "target": "es5",
-  "moduleResolution": "node",
-  "experimentalDecorators": true,
-  "emitDecoratorMetadata": true,
-  "sourceMap": true,
-  "compileOnSave": false,
-  "jsx": "react"
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "sourceMap": true,
+    "compileOnSave": false,
+    "jsx": "react",
+    "lib": [
+      "dom",
+      "es2015"
+    ]
+  }
 }
