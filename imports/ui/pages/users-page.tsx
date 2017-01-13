@@ -6,15 +6,23 @@ interface Props {
 	users: Meteor.User[];
 }
 
-class UsersPage extends React.Component<Props, {}> {
-	renderUsers() {
+function subscribe(): Props {
+	Meteor.subscribe('users');
+
+	return {
+		users: Meteor.users.find({}).fetch()
+	};
+}
+
+class UsersPage extends React.Component<Props, void> {
+	renderUsers(): JSX.Element[] {
 		return this.props.users.map((user) => (
 			<li key={ user._id }>
 				{ user.username }
 			</li>
 		));
 	}
-	render() {
+	render(): JSX.Element {
 		return (
 			<div>
 				{ this.renderUsers() }
@@ -23,10 +31,4 @@ class UsersPage extends React.Component<Props, {}> {
 	}
 }
 
-export default createContainer<{}, {}, Props>(() => {
-	Meteor.subscribe('users');
-
-	return {
-		users: Meteor.users.find({}).fetch()
-	};
-}, UsersPage);
+export default createContainer(subscribe, UsersPage);

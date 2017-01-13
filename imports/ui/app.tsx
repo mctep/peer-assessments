@@ -5,27 +5,32 @@ import {
 	Route,
 	IndexRoute,
 	browserHistory,
-	Link
+	Link,
+	Redirect
 } from 'react-router';
 
-import RequiredAuth from './required-auth';
+import authRequired from './hocs/auth-required';
 
-import Layout from './layout';
+import Layout from './components/layout';
 import IndexPage from './pages/index-page';
 import UsersPage from './pages/users-page';
 import LoginPage from './pages/login-page';
+import NotFoundPage from './pages/not-found-page';
 
-export default class App extends React.Component<{}, {}> {
-	render() {
+export default class App extends React.Component<void, void> {
+	render(): JSX.Element {
 		return (
 			<Router history={ browserHistory }>
-				<Route path="/" component={ RequiredAuth }>
+				<Route path="/">
 					<Route component={ Layout }>
-						<IndexRoute component={ IndexPage } />
-						<Route path="/users" component={ UsersPage } />
+						<IndexRoute component={ authRequired(IndexPage) } />
+						<Route path="/users" component={ authRequired(UsersPage) } />
+						<Route path="/subjects" component={ authRequired(UsersPage, 'admin') } />
 					</Route>
 				</Route>
 				<Route path="/login" component={ LoginPage } />
+				<Route path="/page-not-found" component={ NotFoundPage } />
+				<Redirect from="*" to="/page-not-found" />
 			</Router>
 		);
 	}

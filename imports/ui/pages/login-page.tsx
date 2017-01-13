@@ -8,17 +8,17 @@ import LoginForm, { LoginFormData } from '../forms/login-form';
 import { Accounts } from 'meteor/accounts-base';
 
 import { Credentials, createAndLoginUser } from '../../api/users';
-import { AuthRedirectQuery } from '../required-auth';
+import { AuthRedirectQuery } from '../hocs/auth-required';
 
 interface LoginPageProps {
 	router: IRouter & RouterState;
 	loggingIn: boolean;
 }
 
-class LoginPage extends React.Component<LoginPageProps, {}> {
+class LoginPage extends React.Component<LoginPageProps, void> {
 	private loggingIn?: Promise<void>;
 
-	componentWillUnmount() {
+	componentWillUnmount(): void {
 		if (this.loggingIn) {
 			this.loggingIn.cancel();
 		}
@@ -44,7 +44,7 @@ class LoginPage extends React.Component<LoginPageProps, {}> {
 		});
 	}
 
-	render() {
+	render(): JSX.Element {
 		return (
 			<div>
 				<h1>Login</h1>

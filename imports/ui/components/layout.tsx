@@ -1,24 +1,15 @@
 import * as React from 'react';
 import { Link, IndexLink } from 'react-router';
-import { createContainer } from 'meteor/react-meteor-data';
-import { User } from '../api/users';
-import LogoutButton from './logout-button';
+import { withUser, IWithUser } from '../hocs/with-user';
+import Logotype from '../components/logotype';
+import LogoutButton from '../components/logout-button';
 
-interface SubsProps {
-	user: User;
-}
-
-function subscriptions(): SubsProps {
-	return {
-		user: Meteor.user() as User
-	};
-}
-
-class Layout extends React.Component<SubsProps, {}> {
+class Layout extends React.Component<IWithUser, void> {
 	static renderAdminMenu(): JSX.Element {
 		return (
 			<ul>
 				<li><Link to="/users">Users</Link></li>
+				<li><Link to="/subjects">Subjects</Link></li>
 			</ul>
 		);
 	}
@@ -33,18 +24,28 @@ class Layout extends React.Component<SubsProps, {}> {
 	renderMenu(): JSX.Element {
 		const { user } = this.props;
 
-		if (user.roles.indexOf('admin') !== -1) {
+		if (!user) { return null; }
+
+		if (Roles.userIsInRole(user, 'admin')) {
 			return Layout.renderAdminMenu();
 		}
 
 		return Layout.renderUserMenu();
 	}
 
+	renderLogoutButton(): JSX.Element {
+		const { user } = this.props;
+
+		if (!user) { return null; }
+
+		return <LogoutButton />;
+	}
+
 	render(): JSX.Element {
 		return (
 			<div>
 				<div>
-					<IndexLink to="/">Peer Assessment</IndexLink>
+					<Logotype />
 					{ this.renderMenu() }
 					<LogoutButton />
 				</div>
@@ -54,4 +55,4 @@ class Layout extends React.Component<SubsProps, {}> {
 	}
 }
 
-export default createContainer(subscriptions, Layout);
+export default withUser(Layout);
