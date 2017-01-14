@@ -1,5 +1,6 @@
 import * as Promise from 'bluebird';
 import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check';
 
 import { AccessDeniedError, BadRequestError } from '../../lib/meteor/errors';
 import registerPromisedMeteorMethod from '../../lib/meteor/register-promised-method';

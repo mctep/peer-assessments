@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
+import { Header, Divider } from 'semantic-ui-react';
 
 import AddSubjectForm, { AddSubjectFormData } from '../forms/add-subject-form';
 import { Subject, Subjects } from '../../api/subjects';
@@ -46,11 +47,13 @@ export default class SubjectsPage extends React.Component<{}, State> {
 	public render(): JSX.Element {
 		return (
 			<div>
+				<Header as="h1">Add or Remove Assessment Subjects</Header>
 				<AddSubjectForm
 					onSubmit={ this.handleSubjectAdd }
 					onChange={ this.handleNewSubjectChange }
 					submitDisabled={ this.state.createSubjectDisabled }
 				/>
+				<Divider />
 				<SubjectsList
 					filter={ this.state.newSubjectName.trim() }
 					onListChange={ this.handleListChange }

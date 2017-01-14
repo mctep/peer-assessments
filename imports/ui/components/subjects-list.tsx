@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Card, Button } from 'semantic-ui-react';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import escapeRegexp = require('escape-string-regexp');
@@ -38,18 +39,30 @@ class SubjectsList extends React.Component<InProps & SubsProps, void> {
 	private renderSubjects(): JSX.Element[] {
 		return this.props.subjects.map((subject: Subject): JSX.Element => {
 			return (
-				<li key={ subject._id }>
-					{ subject.name }
-				</li>
+				<Card key={ subject._id }>
+					<Card.Content>
+						<Card.Header>
+							{ subject.name }
+							<Button
+								floated="right"
+								size="mini"
+								basic
+								color="red"
+							>
+								Remove
+							</Button>
+						</Card.Header>
+					</Card.Content>
+				</Card>
 			);
 		});
 	}
 
 	public render(): JSX.Element {
 		return (
-			<ul>
+			<Card.Group>
 				{ this.renderSubjects() }
-			</ul>
+			</Card.Group>
 		);
 	}
 }

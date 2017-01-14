@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Form, Input, Button } from 'semantic-ui-react';
 
 export interface AddSubjectFormData {
 	name: string;
@@ -40,22 +41,25 @@ export default class AddSubjectForm extends React.Component<Props, AddSubjectFor
 
 	public render(): JSX.Element {
 		return (
-			<form onSubmit={ this.handleSubmit }>
-				<div>
-					<input
-						type="text"
-						name="name"
-						value={ this.state.name }
-						onChange={ this.handleNameChange }
-					/>
-					<button
+			<Form onSubmit={ this.handleSubmit } size="tiny">
+				<Input
+					type="text"
+					name="name"
+					value={ this.state.name }
+					onChange={ this.handleNameChange }
+					action
+					placeholder="Subject Name"
+				>
+					<input />
+					<Button
+						primary
 						disabled={ this.isSubmitDisabled() }
 						type="submit"
 					>
 						Add
-					</button>
-				</div>
-			</form>
+					</Button>
+				</Input>
+			</Form>
 		);
 	}
 }
