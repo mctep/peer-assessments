@@ -15,6 +15,8 @@ import Layout from './components/layout';
 import IndexPage from './pages/index-page';
 import UsersPage from './pages/users-page';
 import LoginPage from './pages/login-page';
+import SubjectsPage from './pages/subjects-page';
+import AssessMentUserPage from './pages/assessment-user-page';
 import NotFoundPage from './pages/not-found-page';
 
 export default class App extends React.Component<void, void> {
@@ -25,7 +27,8 @@ export default class App extends React.Component<void, void> {
 					<Route component={ Layout }>
 						<IndexRoute component={ authRequired(IndexPage) } />
 						<Route path="/users" component={ authRequired(UsersPage) } />
-						<Route path="/subjects" component={ authRequired(UsersPage, 'admin') } />
+						<Route path="/users/:userId/asessment" component={ authRequired(AssessMentUserPage) } />
+						<Route path="/subjects" component={ authRequired(SubjectsPage, 'admin') } />
 					</Route>
 				</Route>
 				<Route path="/login" component={ LoginPage } />
