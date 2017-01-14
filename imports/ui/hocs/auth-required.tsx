@@ -85,7 +85,7 @@ export default function authRequired(Comp: ComponentConstructor<{}>, ...roles: R
 				return null;
 			}
 
-			return <Comp />;
+			return <Comp { ...this.props } />;
 		}
 	}
 

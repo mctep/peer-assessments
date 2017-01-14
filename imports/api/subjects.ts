@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
-import { check, Match } from 'meteor/check';
+import { NotEmptyStringMatch } from '../lib/meteor/matches';
 import * as Promise from 'bluebird';
+import registerPromisedMeteorMethod from '../lib/meteor/register-promised-method';
 
 export type SubjectId = string;
 
@@ -12,21 +13,11 @@ export interface Subject {
 
 export const Subjects: Mongo.Collection<Subject> = new Mongo.Collection<Subject>('subjects');
 
-const NotEmptyString: Function = Match.Where((val: string): boolean => {
-	check(val, String);
-	return val.length > 0;
-});
-
 const ACCESS_DENIED_STATUS: number = 403;
 const BADREQUEST_STATUS: number = 400;
 
-function registerMethod<Arg, Res>(name: string, foo: (arg?: Arg) => Res): (arg: Arg) => Promise<Res> {
-	Meteor.methods({[name]: foo});
-	return (arg?: Arg): Promise<Res> => Promise.promisify<Res, string, Arg>(Meteor.call)(name, arg);
-}
-
 export const subjectInsertMethod: (name: string) => Promise<String> =
-	registerMethod('subjects.insert', function subjectsInsert(name: string): string {
+	registerPromisedMeteorMethod('subjects.insert', function subjectsInsert(name: string): string {
 		name = name.trim();
 
 		if (!Roles.userIsInRole(this.userId, 'admin')) {
@@ -37,7 +28,7 @@ export const subjectInsertMethod: (name: string) => Promise<String> =
 			throw new Meteor.Error(BADREQUEST_STATUS, 'This subject is already exists');
 		}
 
-		check(name, NotEmptyString);
+		check(name, NotEmptyStringMatch);
 
 		return Subjects.insert({ name });
 	}
