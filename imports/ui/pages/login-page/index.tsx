@@ -1,15 +1,16 @@
 import * as React from 'react';
+import { Header, Grid } from 'semantic-ui-react';
 import { withRouter, IRouter, RouterState } from 'react-router';
 import { Meteor } from 'meteor/meteor';
 import * as Promise from 'bluebird';
 
-import LoginForm, { LoginFormData } from '../forms/login-form';
+import Logotype from '../../components/logotype';
+import LoginForm, { LoginFormData } from '../../forms/login-form';
 
-import { Accounts } from 'meteor/accounts-base';
+import { createAndLoginUser } from '../../../api/users/methods';
+import { AuthRedirectQuery, Location } from '../../hocs/auth-required';
 
-import { Credentials } from '../../api/users';
-import { createAndLoginUser } from '../../api/users/methods';
-import { AuthRedirectQuery, Location } from '../hocs/auth-required';
+import './style.css';
 
 interface LoginPageProps {
 	router: IRouter & RouterState;
@@ -32,9 +33,7 @@ class LoginPage extends React.Component<LoginPageProps, void> {
 		this.loggingIn = createAndLoginUser(data);
 
 		this.loggingIn
-		.finally(() => {
-			delete this.loggingIn;
-		})
+		.finally(() => delete this.loggingIn)
 		.then(() => {
 			const router: IRouter & RouterState = this.props.router;
 			const location: Location = router.location;
@@ -49,10 +48,14 @@ class LoginPage extends React.Component<LoginPageProps, void> {
 
 	public render(): JSX.Element {
 		return (
-			<div>
-				<h1>Login</h1>
-				<LoginForm onSubmit={ this.handleFormSubmit } />
-			</div>
+			<Grid className="login-page" textAlign="center" verticalAlign="middle">
+				<Grid.Column className="login-page__form-container">
+					<Header as="h1">
+						<Logotype />
+					</Header>
+					<LoginForm onSubmit={ this.handleFormSubmit } />
+				</Grid.Column>
+			</Grid>
 		);
 	}
 }

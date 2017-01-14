@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { Segment, Input, Form } from 'semantic-ui-react';
+
+import './style.css';
 
 export interface LoginFormData {
 	username: string;
@@ -36,28 +39,42 @@ export default class LoginForm extends React.Component<LoginFormProps, LoginForm
 	}
 
 	public render(): JSX.Element {
+		const submitDisabled: boolean = !this.state.password || !this.state.username;
+
 		return (
-			<form onSubmit={ this.handleFormSubmit }>
-				<div>
-					<input
+			<Segment>
+				<Form onSubmit={ this.handleFormSubmit }>
+					<Form.Input
+						fluid
+						placeholder="Username"
+						icon="user"
+						iconPosition="left"
 						type="text"
 						name="username"
 						value={ this.state.username }
 						onChange={ this.handleUsernameChange }
 					/>
-				</div>
-				<div>
-					<input
+					<Form.Input
+						fluid
+						icon="lock"
+						iconPosition="left"
+						placeholder="Password"
 						type="password"
 						name="password"
 						value={ this.state.password }
 						onChange={ this.handlePasswordChange }
 					/>
-				</div>
-				<div>
-					<button type="submit">Login</button>
-				</div>
-			</form>
+
+					<Form.Button
+						type="submit"
+						color="blue"
+						className="login-form__submit-button"
+						disabled={ submitDisabled }
+					>
+						Login
+					</Form.Button>
+				</Form>
+			</Segment>
 		);
 	}
 }

@@ -1,0 +1,15 @@
+.logotype {
+	display: inline-block;
+	position: relative;
+	padding-top: 0.65em;
+}
+
+.logotype__first-word {
+	position: absolute;
+	top: 0;
+	left: 0.43em;
+}
+
+.logotype__major-letter {
+	color: #2185D0;
+}
