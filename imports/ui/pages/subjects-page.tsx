@@ -3,7 +3,8 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import AddSubjectForm, { AddSubjectFormData } from '../forms/add-subject-form';
-import { Subject, Subjects, subjectInsertMethod } from '../../api/subjects';
+import { Subject, Subjects } from '../../api/subjects';
+import { insertSubject } from '../../api/subjects/methods';
 import SubjectsList from '../components/subjects-list';
 
 interface State {
@@ -23,7 +24,7 @@ export default class SubjectsPage extends React.Component<{}, State> {
 
 	private handleSubjectAdd = (data: AddSubjectFormData): void => {
 		// TODO handle errors
-		subjectInsertMethod(data.name);
+		insertSubject(data.name);
 	}
 
 	private handleNewSubjectChange = (data: AddSubjectFormData): void => {

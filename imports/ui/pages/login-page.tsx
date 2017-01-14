@@ -7,7 +7,8 @@ import LoginForm, { LoginFormData } from '../forms/login-form';
 
 import { Accounts } from 'meteor/accounts-base';
 
-import { Credentials, createAndLoginUser } from '../../api/users';
+import { Credentials } from '../../api/users';
+import { createAndLoginUser } from '../../api/users/methods';
 import { AuthRedirectQuery, Location } from '../hocs/auth-required';
 
 interface LoginPageProps {

@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import * as Promise from 'bluebird';
 
 Promise.config({ cancellation: true });

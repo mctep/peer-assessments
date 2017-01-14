@@ -1,21 +1,10 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+
+import { Credentials } from '.';
+
 import * as Promise from 'bluebird';
-
 Promise.config({ cancellation: true });
-
-export type Role = 'user' | 'admin';
-
-export interface Credentials {
-	username: string;
-	password: string;
-}
-
-export type UserId = string;
-
-export interface User extends Meteor.User {
-	roles?: Role[];
-}
 
 export function createAndLoginUser(credentials: Credentials): Promise<void> {
 	const username: string = credentials.username;

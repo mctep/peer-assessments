@@ -1,30 +1,13 @@
-import { Mongo } from 'meteor/mongo';
-import { SubjectId, Subjects } from './subjects';
-import { UserId } from './users';
 import * as Promise from 'bluebird';
-import registerPromisedMeteorMethod from '../lib/meteor/register-promised-method';
+import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
-import { NotEmptyStringMatch } from '../lib/meteor/matches';
-import { AccessDeniedError, BadRequestError } from '../lib/meteor/errors';
 
-export type Mark = 'exellent' | 'good' | 'normal' | 'bad';
-export const allMarks: Mark[] = ['exellent', 'good', 'normal', 'bad'];
+import { AccessDeniedError, BadRequestError } from '../../lib/meteor/errors';
+import registerPromisedMeteorMethod from '../../lib/meteor/register-promised-method';
 
-type AssessmentId = string;
-
-export interface IMarks {
-	exellent: SubjectId[];
-	good: SubjectId[];
-	normal: SubjectId[];
-	bad: SubjectId[];
-}
-
-export interface Assessment {
-	_id?: AssessmentId;
-	who: UserId;
-	whom: UserId;
-	marks: IMarks;
-}
+import { Assessment, IMarks, Mark, AssessmentId, Assessments } from '.';
+import { UserId } from '../users';
+import { SubjectId, Subjects } from '../subjects';
 
 export function createEmptyAssessment(who: UserId, whom: UserId): Assessment {
 	return {
@@ -38,8 +21,6 @@ export function createEmptyAssessment(who: UserId, whom: UserId): Assessment {
 	};
 }
 
-export const Assessments: Mongo.Collection<Assessment> = new Mongo.Collection<Assessment>('assessments');
-
 export function getMarkedSubjectIds(marks: IMarks): SubjectId[] {
 	return Object.keys(marks)
 	.reduce((result: SubjectId[], mark: Mark) => result.concat(marks[mark]), []);
@@ -48,7 +29,6 @@ export function getMarkedSubjectIds(marks: IMarks): SubjectId[] {
 export const upsertAssessment: (assigmnet: Assessment) => Promise<AssessmentId> =
 registerPromisedMeteorMethod('upsertAssessment',
 	(assessment: Assessment): AssessmentId => {
-		debugger;
 		const who: string = assessment.who;
 		const whom: string = assessment.whom;
 		const marks: IMarks = assessment.marks;

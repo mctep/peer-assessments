@@ -1,13 +1,8 @@
 import * as React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { User } from '../../api/users';
-import {
-	Assessments,
-	Assessment,
-	createEmptyAssessment,
-	IMarks,
-	upsertAssessment
-} from '../../api/assessments';
+import { Assessments, Assessment, IMarks } from '../../api/assessments';
+import { createEmptyAssessment, upsertAssessment } from '../../api/assessments/methods';
 import withRouteParams from '../hocs/with-route-params';
 import Loader from '../components/loader';
 import MarksForm from '../forms/marks-form';
