@@ -18,7 +18,7 @@ export default class Routes extends React.Component<void, void> {
 				<Route path="/">
 					<Route component={ Layout }>
 						<IndexRoute component={ authRequired(UsersPage) } />
-						<Route path="/assessment/:username" component={ authRequired(AssessmentUserPage) } />
+						<Route path="/assess/:username" component={ authRequired(AssessmentUserPage) } />
 						<Route path="/subjects" component={ authRequired(SubjectsPage, 'admin') } />
 					</Route>
 				</Route>

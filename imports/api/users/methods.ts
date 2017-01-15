@@ -6,6 +6,14 @@ import { Credentials } from '.';
 import * as Promise from 'bluebird';
 Promise.config({ cancellation: true });
 
+export function loginWithPassword(credentials: Credentials): Promise<void> {
+	const username: string = credentials.username;
+	const password: string = credentials.password;
+
+	return Promise.promisify<void, string, string>
+	(Meteor.loginWithPassword)(username, password);
+}
+
 export function createAndLoginUser(credentials: Credentials): Promise<void> {
 	const username: string = credentials.username;
 	const password: string = credentials.password;

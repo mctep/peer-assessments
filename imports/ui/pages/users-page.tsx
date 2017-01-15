@@ -12,14 +12,14 @@ function subscribe(): Props {
 	Meteor.subscribe('users');
 
 	return {
-		users: Meteor.users.find({}).fetch()
+		users: Meteor.users.find({ _id: { $ne: Meteor.userId() } }).fetch()
 	};
 }
 
 class UsersPage extends React.Component<Props, void> {
 	private renderUsers(): JSX.Element[] {
 		return this.props.users.map((user: Meteor.User) => (
-			<Card key={ user._id } as={ wrapLink(`/assessment/${user.username}`) }>
+			<Card key={ user._id } as={ wrapLink(`/assess/${user.username}`) }>
 				<Card.Content>
 					<Card.Header>
 						{ user.username }

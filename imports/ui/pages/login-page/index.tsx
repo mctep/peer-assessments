@@ -8,7 +8,7 @@ import Logotype from '../../components/logotype';
 import CenteredLayout from '../../components/centered-layout';
 import LoginForm, { LoginFormData } from '../../forms/login-form';
 
-import { createAndLoginUser } from '../../../api/users/methods';
+import { loginWithPassword } from '../../../api/users/methods';
 import { AuthRedirectQuery, Location } from '../../hocs/auth-required';
 
 import './style.css';
@@ -18,7 +18,17 @@ interface LoginPageProps {
 	loggingIn: boolean;
 }
 
-class LoginPage extends React.Component<LoginPageProps, void> {
+interface State {
+	error?: Meteor.Error;
+}
+
+class LoginPage extends React.Component<LoginPageProps, State> {
+	constructor(props: LoginPageProps) {
+		super(props);
+
+		this.state = { error: null };
+	}
+
 	private loggingIn?: Promise<void>;
 
 	private componentWillUnmount(): void {
@@ -31,7 +41,7 @@ class LoginPage extends React.Component<LoginPageProps, void> {
 		const username: string = data.username;
 		const password: string = data.password;
 
-		this.loggingIn = createAndLoginUser(data);
+		this.loggingIn = loginWithPassword(data);
 
 		this.loggingIn
 		.finally(() => delete this.loggingIn)
@@ -43,17 +53,25 @@ class LoginPage extends React.Component<LoginPageProps, void> {
 			router.replace(query && query.retpath || '/');
 		})
 		.catch(Meteor.Error, (error: Meteor.Error) => {
-			console.log(error);
+			this.setState({
+				...this.state,
+				error
+			});
 		});
 	}
 
 	public render(): JSX.Element {
+		const errorMessage: string = this.state.error ? 'Username or Password is incorrect' : null;
+
 		return (
 			<CenteredLayout className="login-page">
 				<Header as="h1">
-						<Logotype />
-					</Header>
-					<LoginForm onSubmit={ this.handleFormSubmit } />
+					<Logotype />
+				</Header>
+				<LoginForm
+					onSubmit={ this.handleFormSubmit }
+					errorMessage={ errorMessage }
+				/>
 			</CenteredLayout>
 		);
 	}

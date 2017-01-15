@@ -1,7 +1,16 @@
 import * as React from 'react';
-import { Segment, Input, Form } from 'semantic-ui-react';
+import {
+	Segment,
+	Input,
+	Form,
+	Message,
+	FormInputProps
+} from 'semantic-ui-react';
 
 import './style.css';
+
+// TODO create issue in semantic UI
+const FormInput: React.ComponentClass<FormInputProps & { autoFocus?: boolean }> = Form.Input;
 
 export interface LoginFormData {
 	username: string;
@@ -10,6 +19,7 @@ export interface LoginFormData {
 
 export interface LoginFormProps {
 	onSubmit: (data: LoginFormData) => void;
+	errorMessage?: string;
 }
 
 export default class LoginForm extends React.Component<LoginFormProps, LoginFormData> {
@@ -38,13 +48,19 @@ export default class LoginForm extends React.Component<LoginFormProps, LoginForm
 		this.setState({ ...this.state, password });
 	}
 
+	private renderErrorMessage(): JSX.Element {
+		if (!this.props.errorMessage) { return null; }
+		return <Message error>{ this.props.errorMessage }</Message>;
+	}
+
 	public render(): JSX.Element {
 		const submitDisabled: boolean = !this.state.password || !this.state.username;
 
 		return (
 			<Segment>
+				{ this.renderErrorMessage() }
 				<Form onSubmit={ this.handleFormSubmit }>
-					<Form.Input
+					<FormInput
 						fluid
 						placeholder="Username"
 						icon="user"
@@ -53,6 +69,7 @@ export default class LoginForm extends React.Component<LoginFormProps, LoginForm
 						name="username"
 						value={ this.state.username }
 						onChange={ this.handleUsernameChange }
+						autoFocus
 					/>
 					<Form.Input
 						fluid
