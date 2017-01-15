@@ -3,7 +3,9 @@ import { Card, Button } from 'semantic-ui-react';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import escapeRegexp = require('escape-string-regexp');
+import SubjectComponent from './subject';
 
+import SubjectList from './subjects-list';
 import { Subject, Subjects } from '../../api/subjects';
 
 interface InProps {
@@ -29,42 +31,18 @@ function subscribe(props: InProps): SubsProps {
 	};
 }
 
-class SubjectsList extends React.Component<InProps & SubsProps, void> {
+class SubjectsFilterFetcher extends React.Component<InProps & SubsProps, void> {
 	public componentDidUpdate(): void {
 		if (this.props.onListChange) {
 			this.props.onListChange(this.props.subjects);
 		}
 	}
 
-	private renderSubjects(): JSX.Element[] {
-		return this.props.subjects.map((subject: Subject): JSX.Element => {
-			return (
-				<Card key={ subject._id }>
-					<Card.Content>
-						<Card.Header>
-							{ subject.name }
-							<Button
-								floated="right"
-								size="mini"
-								basic
-								color="red"
-							>
-								Remove
-							</Button>
-						</Card.Header>
-					</Card.Content>
-				</Card>
-			);
-		});
-	}
-
 	public render(): JSX.Element {
 		return (
-			<Card.Group>
-				{ this.renderSubjects() }
-			</Card.Group>
+			<SubjectList subjects={ this.props.subjects } removable />
 		);
 	}
 }
 
-export default createContainer(subscribe, SubjectsList);
+export default createContainer(subscribe, SubjectsFilterFetcher);

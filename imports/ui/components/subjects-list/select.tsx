@@ -1,7 +1,11 @@
 import * as React from 'react';
+import { Card, Checkbox, List } from 'semantic-ui-react';
+import * as cn from 'classnames';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
-import { Subject, Subjects } from '../../api/subjects';
+import { Subject, Subjects } from '../../../api/subjects';
+
+import SubjectsList from '.';
 
 export interface Props {
 	subjects: Subject[];
@@ -37,15 +41,10 @@ export default class SubjectSelect extends React.Component<Props, State> {
 		}
 	}
 
-	private handleSubjectCheckedChange = (e: React.FormEvent): void => {
-		const element: HTMLInputElement = (e.target as HTMLInputElement);
-		const subject: Subject = this.props.subjects.find((subj: Subject) => subj._id === element.value);
-
-		if (!subject) { return; }
-
+	private handleSubjectSelectedChange = (subject: Subject, isSelected: boolean): void => {
 		const selected: Subject[] = [].concat(this.state.selected);
 
-		if (element.checked) {
+		if (isSelected) {
 			selected.push(subject);
 		} else {
 			selected.splice(selected.indexOf(subject), 1);
@@ -54,32 +53,14 @@ export default class SubjectSelect extends React.Component<Props, State> {
 		this.setState({ ...this.state, selected });
 	}
 
-	private renderSubject(subject: Subject): JSX.Element {
-		const checked: boolean = this.state.selected.indexOf(subject) !== -1;
-
-		return (
-			<li key={ subject._id }>
-				<label>
-					<input
-						type="checkbox"
-						value={ subject._id }
-						checked={ checked }
-						onChange={ this.handleSubjectCheckedChange }
-					/>
-					{ subject.name }
-				</label>
-			</li>
-		);
-	}
-
 	public render(): JSX.Element {
-		const subjects: JSX.Element[] = this.props.subjects
-		.map((subject: Subject) => this.renderSubject(subject));
-
 		return (
-			<ul>
-				{ subjects }
-			</ul>
+			<SubjectsList
+				subjects={ this.props.subjects }
+				selected={ this.state.selected }
+				onSelect={ this.handleSubjectSelectedChange }
+				selectable
+			/>
 		);
 	}
 }

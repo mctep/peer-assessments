@@ -1,0 +1,29 @@
+/*
+	Big Semantic UI hacks
+*/
+
+.subjects-list {
+	margin: 0 -0.5em;
+}
+
+.subjects-list__item {
+	user-select: none;
+	margin: 0 !important;
+}
+
+.subjects-list__label.blue {
+	border: 1px solid transparent;
+}
+
+.subjects-list__item,
+.ui.horizontal.list:not(.celled)>.item.subjects-list__item:first-child,
+.ui.horizontal.list>.item.subjects-list__item:last-child {
+	padding-left: .5em !important;
+	padding-top: .5em !important;
+	padding-right: .5em !important;
+	padding-bottom: .5em !important;
+}
+
+.subjects-list__checkbox {
+	display: none;
+}

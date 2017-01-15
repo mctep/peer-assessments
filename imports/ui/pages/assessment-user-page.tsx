@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { withRouter, IRouter } from 'react-router';
 import { createContainer } from 'meteor/react-meteor-data';
 import { User } from '../../api/users';
 import { Assessments, Assessment, IMarks } from '../../api/assessments';
@@ -6,32 +7,56 @@ import { createEmptyAssessment, upsertAssessment } from '../../api/assessments/m
 import withRouteParams from '../hocs/with-route-params';
 import Loader from '../components/loader';
 import MarksForm from '../forms/marks-form';
+import { NOT_FOUND_ERROR_STATUS } from '../../lib/meteor/errors';
 
 interface RouteParams {
-	userId: string;
+	username: string;
 }
 
 interface IWithAssessmentUser {
 	loading: boolean;
-	user: User;
-	assessment: Assessment;
+	user?: User;
+	assessment?: Assessment;
 	onAssessmentChange: (assessment: Assessment) => void;
 }
 
-function subscribe(props: RouteParams): IWithAssessmentUser {
-	const userHandle: Meteor.SubscriptionHandle = Meteor.subscribe('userForAssessment', props.userId);
-	const assessmentHandle: Meteor.SubscriptionHandle = Meteor.subscribe('assessmentForUser', props.userId);
+function subscribe(props: RouteParams & { router: IRouter }): IWithAssessmentUser {
+	// TODO !?!?! Research more about subscribtion error handling.
+	// Very strange error handling.
+	let redirected: boolean = false;
+	function onError(error: Meteor.Error): void {
+		if (redirected) { return; }
+
+		if (error.error === NOT_FOUND_ERROR_STATUS) {
+			redirected = true;
+			props.router.replace('/page-not-found');
+		}
+	}
+
+	const userHandle: Meteor.SubscriptionHandle = Meteor.subscribe('userForAssessment', props.username, { onError });
+	const assessmentHandle: Meteor.SubscriptionHandle = Meteor.subscribe('assessmentForUser', props.username, { onError });
 
 	const loading: boolean = !(userHandle.ready() && assessmentHandle.ready());
 
-	const user: User = Meteor.users.findOne(props.userId);
+	const subProps: IWithAssessmentUser = {
+		loading,
+		user: null,
+		assessment: null,
+		onAssessmentChange: upsertAssessment
+	};
+
+	if (loading) { return subProps; }
+
+	const user: User = Meteor.users.findOne({ username: props.username });
 	const assessment: Assessment = Assessments.findOne({
 		who: Meteor.userId(),
-		whom: props.userId
-	}) || createEmptyAssessment(Meteor.userId(), props.userId);
+		whom: user._id
+	}) || createEmptyAssessment(Meteor.userId(), user._id);
 
+	subProps.user = user;
+	subProps.assessment = assessment;
 
-	return { loading, user, assessment, onAssessmentChange: upsertAssessment };
+	return subProps;
 }
 
 class AssessmentUserPage extends React.Component<RouteParams & IWithAssessmentUser, {}> {
@@ -57,9 +82,11 @@ class AssessmentUserPage extends React.Component<RouteParams & IWithAssessmentUs
 }
 
 export default withRouteParams(
-	createContainer<RouteParams, IWithAssessmentUser, RouteParams & IWithAssessmentUser>(
-		subscribe,
-		AssessmentUserPage
+	withRouter(
+		createContainer<RouteParams, IWithAssessmentUser, RouteParams & IWithAssessmentUser>(
+			subscribe,
+			AssessmentUserPage
+		)
 	)
 );
 

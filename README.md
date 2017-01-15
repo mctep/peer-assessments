@@ -9,3 +9,5 @@
 * Think about fetching single element (`userForAssessment` publication)
 * I have not put work `meteor-css-modules` and `typed-css-modules` together.
 * Link font files like webpack. I had to use Semantic UI CDN instead of `semantic-ui-css`.
+* Research more about subscribtion error handling
+* Drag'n'Drop subject cards

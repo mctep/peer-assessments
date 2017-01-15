@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Header, Grid } from 'semantic-ui-react';
+import { Header } from 'semantic-ui-react';
 import { withRouter, IRouter, RouterState } from 'react-router';
 import { Meteor } from 'meteor/meteor';
 import * as Promise from 'bluebird';
 
 import Logotype from '../../components/logotype';
+import CenteredLayout from '../../components/centered-layout';
 import LoginForm, { LoginFormData } from '../../forms/login-form';
 
 import { createAndLoginUser } from '../../../api/users/methods';
@@ -48,14 +49,12 @@ class LoginPage extends React.Component<LoginPageProps, void> {
 
 	public render(): JSX.Element {
 		return (
-			<Grid className="login-page" textAlign="center" verticalAlign="middle">
-				<Grid.Column className="login-page__form-container">
-					<Header as="h1">
+			<CenteredLayout className="login-page">
+				<Header as="h1">
 						<Logotype />
 					</Header>
 					<LoginForm onSubmit={ this.handleFormSubmit } />
-				</Grid.Column>
-			</Grid>
+			</CenteredLayout>
 		);
 	}
 }

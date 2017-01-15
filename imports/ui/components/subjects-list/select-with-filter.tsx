@@ -1,14 +1,15 @@
 import * as React from 'react';
+import { Input, Divider } from 'semantic-ui-react';
 import escapeRegexp = require('escape-string-regexp');
-import { Subject } from '../../api/subjects';
-import SubjectsSelect, { Props as SubjectsSelectProps } from './subjects-select';
+import { Subject } from '../../../api/subjects';
+import SubjectsSelect, { Props as SubjectsSelectProps } from './select';
 
 interface State {
 	filter: string;
 	subjects: Subject[];
 }
 
-export default class SubjectsFilterSelect extends React.Component<SubjectsSelectProps, State> {
+export default class SubjectsSelectWithFilter extends React.Component<SubjectsSelectProps, State> {
 	private static filterAvaliableSubjects(subjects: Subject[], filter: string): Subject[] {
 		const reg: RegExp = new RegExp(`.*${escapeRegexp(filter.trim())}`);
 		return subjects.filter((subject: Subject) =>
@@ -38,7 +39,7 @@ export default class SubjectsFilterSelect extends React.Component<SubjectsSelect
 	}
 
 	private filterAvaliableSubjects(allSubjects: Subject[]): void {
-		const reg: RegExp = new RegExp(`.*${escapeRegexp(this.state.filter.trim())}`);
+		const reg: RegExp = new RegExp(`.*${escapeRegexp(this.state.filter.trim())}`, 'i');
 		const subjects: Subject[] = allSubjects
 		.filter((subject: Subject) =>
 			reg.test(subject.name)
@@ -55,13 +56,14 @@ export default class SubjectsFilterSelect extends React.Component<SubjectsSelect
 	public render(): JSX.Element {
 		return (
 			<div>
-				<div>
-					<input
-						type="text"
-						onChange={ this.handleInputChange }
-						value={ this.state.filter }
-					/>
-				</div>
+				<Input
+					placeholder="Filter Subjects"
+					fluid
+					type="text"
+					onChange={ this.handleInputChange }
+					value={ this.state.filter }
+				/>
+				<Divider />
 				<SubjectsSelect
 					subjects={ this.state.subjects }
 					onChange={ this.props.onChange }

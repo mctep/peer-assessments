@@ -6,7 +6,7 @@ import { Header, Divider } from 'semantic-ui-react';
 import AddSubjectForm, { AddSubjectFormData } from '../forms/add-subject-form';
 import { Subject, Subjects } from '../../api/subjects';
 import { insertSubject } from '../../api/subjects/methods';
-import SubjectsList from '../components/subjects-list';
+import SubjectsFilterFetcher from '../components/subjects-filter-fetcher';
 
 interface State {
 	newSubjectName?: string;
@@ -54,7 +54,7 @@ export default class SubjectsPage extends React.Component<{}, State> {
 					submitDisabled={ this.state.createSubjectDisabled }
 				/>
 				<Divider />
-				<SubjectsList
+				<SubjectsFilterFetcher
 					filter={ this.state.newSubjectName.trim() }
 					onListChange={ this.handleListChange }
 				/>

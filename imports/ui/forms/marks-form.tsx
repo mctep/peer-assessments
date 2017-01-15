@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { Grid } from 'semantic-ui-react';
 import { IMarks, Mark, allMarks } from '../../api/assessments';
 import { Subject, SubjectId } from '../../api/subjects';
-import SubjectsFilterSelect from '../components/subjects-filter-select';
+import SubjectsListSelectWithFilter from '../components/subjects-list/select-with-filter';
 import MarkedSubjects from '../components/marked-subjects';
 import withSubjects, { IWithSubjects } from '../hocs/with-subjects';
 
@@ -101,13 +102,17 @@ class MarksForm extends React.Component<Props & IWithSubjects, State> {
 
 	public render(): JSX.Element {
 		return (
-			<div>
-				<SubjectsFilterSelect
-					subjects={ this.state.availableSubjects }
-					onChange={ this.handleSubjectsSelect }
-				/>
-				{ this.renderMarks() }
-			</div>
+			<Grid>
+				<Grid.Column width="6">
+					<SubjectsListSelectWithFilter
+						subjects={ this.state.availableSubjects }
+						onChange={ this.handleSubjectsSelect }
+					/>
+				</Grid.Column>
+				<Grid.Column width="10">
+					{ this.renderMarks() }
+				</Grid.Column>
+			</Grid>
 		);
 	}
 }

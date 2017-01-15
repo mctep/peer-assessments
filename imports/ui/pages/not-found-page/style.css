@@ -1,0 +1,28 @@
+i.page-not-found__icon {
+	position: absolute;
+	opacity: 0;
+	transition: opacity 0.2s;
+}
+
+.page-not-found__message:hover .page-not-found__icon {
+	opacity: 1;
+	animation: page-not-found__icon 1s 0.2s;
+}
+
+@keyframes page-not-found__icon {
+	0% {
+		transform: rotate(0);
+	}
+
+	10% {
+		transform: rotate(-20deg);
+	}
+
+	20% {
+		transform: rotate(20deg);
+	}
+
+	30% {
+		transform: rotate(0);
+	}
+}

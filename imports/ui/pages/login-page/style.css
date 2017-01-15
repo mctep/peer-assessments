@@ -1,11 +1,8 @@
 .login-page {
-	height: 100%;
+	max-width: 25em;
 }
 
 .login-page__logotype {
 	font-size: 2em;
 }
 
-.login-page__form-container {
-	max-width: 25em;
-}

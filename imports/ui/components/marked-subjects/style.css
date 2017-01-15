@@ -1,0 +1,8 @@
+.marked-subjects__button {
+	display: none;
+}
+
+.ui.label.marked-subjects__label {
+	transition: opacity 0.1s;
+	cursor: pointer;
+}
