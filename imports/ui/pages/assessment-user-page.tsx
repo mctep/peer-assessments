@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { withRouter, IRouter } from 'react-router';
+import { Header } from 'semantic-ui-react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { User } from '../../api/users';
 import { Assessments, Assessment, IMarks } from '../../api/assessments';
@@ -73,10 +74,16 @@ class AssessmentUserPage extends React.Component<RouteParams & IWithAssessmentUs
 		}
 
 		return (
-			<MarksForm
-				onSubmit={ this.handleMarksChange }
-				marks={ this.props.assessment.marks }
-			/>
+			<div>
+				<Header as="h1">
+					Please Assess User{ ' ' }
+					@{ this.props.user.username }
+				</Header>
+				<MarksForm
+					onSubmit={ this.handleMarksChange }
+					marks={ this.props.assessment.marks }
+				/>
+			</div>
 		);
 	}
 }

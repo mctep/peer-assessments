@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Grid, List } from 'semantic-ui-react';
 import { IMarks, Mark, allMarks } from '../../api/assessments';
 import { Subject, SubjectId } from '../../api/subjects';
 import SubjectsListSelectWithFilter from '../components/subjects-list/select-with-filter';
@@ -83,7 +83,7 @@ class MarksForm extends React.Component<Props & IWithSubjects, State> {
 		);
 
 		return (
-			<li key={ mark }>
+			<List.Item key={ mark }>
 				<MarkedSubjects
 					disabled={ !this.state.selectedSubjects.length }
 					mark={ mark }
@@ -91,13 +91,13 @@ class MarksForm extends React.Component<Props & IWithSubjects, State> {
 					onAddSelectedSubjectsButtonClick={ this.handleAddSelectedSubjectButtonClick }
 					onRemoveSubjectButtonClick={ this.handleRemoveSubjectButtonClick }
 				/>
-			</li>
+			</List.Item>
 		);
 	}
 
 	private renderMarks(): JSX.Element {
 		const marks: JSX.Element[] = allMarks.map((mark: Mark) => this.renderMark(mark));
-		return <ul>{ marks }</ul>;
+		return <List>{ marks }</List>;
 	}
 
 	public render(): JSX.Element {
