@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 
 import { AccessDeniedError, NotFoundError } from '../../../lib/meteor/errors';
 
-import { Assessments } from './..';
+import { Assessments, Assessment } from './..';
 import { User } from '../../users';
 
 Assessments.deny({
@@ -47,4 +47,12 @@ Meteor.publish('assessmentForUser', function assessmentForUser(username: string)
 		who: this.userId,
 		whom: user._id
 	});
+});
+
+Meteor.publish('assessments', function assessments(): Mongo.Cursor<Assessment> {
+	const isAdmin: boolean = Roles.userIsInRole(this.userId, 'admin');
+
+	if (isAdmin) { return Assessments.find(); }
+
+	return Assessments.find({ who: this.userId });
 });
