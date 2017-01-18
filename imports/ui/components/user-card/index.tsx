@@ -125,11 +125,24 @@ export default class UserCard extends React.Component<Props & CardProps, void> {
 	}
 
 	private renderContent(): JSX.Element {
+		const user: User = this.props.user;
+		const username: string = `@${user.username}`;
+
+		const meta: string = user.profile && user.profile.fullname && username || '';
+		const header: string = meta ? user.profile.fullname : username;
+
+		const metaElement: JSX.Element = meta ? (
+			<Card.Meta>
+				{ meta }
+			</Card.Meta>
+		) : null;
+
 		return (
 			<Card.Content>
 				<Card.Header>
-					{ this.props.user.username }
+					{ header }
 				</Card.Header>
+				{ metaElement }
 			</Card.Content>
 		);
 	}

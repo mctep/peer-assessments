@@ -9,4 +9,5 @@ export type UserId = string;
 
 export interface User extends Meteor.User {
 	roles?: Role[];
+	password?: string;
 }

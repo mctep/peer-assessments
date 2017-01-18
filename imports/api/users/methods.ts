@@ -1,10 +1,34 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import registerPromisedMeteorMethod from '../../lib/meteor/register-promised-method';
+import { AccessDeniedError } from '../../lib/meteor/errors';
 
-import { Credentials } from '.';
+import { Credentials, User } from '.';
 
 import * as Promise from 'bluebird';
 Promise.config({ cancellation: true });
+
+export const isUsernameExists: (username: string) => Promise<boolean> =
+registerPromisedMeteorMethod('isUsernameExists',
+	(username: string) => {
+		if (!Roles.userIsInRole(Meteor.user(), 'admin')) {
+			throw new AccessDeniedError();
+		}
+
+		return !!Meteor.users.findOne({ username });
+	}
+);
+
+export const createNewUser: (user: User) => Promise<string> =
+registerPromisedMeteorMethod('createNewUser',
+	(user: User) => {
+		if (!Roles.userIsInRole(Meteor.user(), 'admin')) {
+			throw new AccessDeniedError();
+		}
+
+		return Accounts.createUser(user);
+	}
+);
 
 export function loginWithPassword(credentials: Credentials): Promise<void> {
 	const username: string = credentials.username;
@@ -12,33 +36,4 @@ export function loginWithPassword(credentials: Credentials): Promise<void> {
 
 	return Promise.promisify<void, string, string>
 	(Meteor.loginWithPassword)(username, password);
-}
-
-export function createAndLoginUser(credentials: Credentials): Promise<void> {
-	const username: string = credentials.username;
-	const password: string = credentials.password;
-
-	return new Promise<void>((resolve: () => void, reject: () => void, onCancel: (cb: () => void) => void): void => {
-		let canceled: boolean;
-		canceled = false;
-
-		onCancel(() => { canceled = true; });
-
-		Promise.promisify<boolean, string, string>
-		(Meteor.call)('accounts.isUsernameExists', credentials.username)
-		.then((exists: boolean) => {
-			if (canceled) { return; }
-			if (exists) { return; }
-
-			return Promise.promisify<void, Credentials>
-			(Accounts.createUser)(credentials);
-		})
-		.then(() => {
-			if (canceled) { return; }
-
-			return Promise.promisify<void, string, string>
-			(Meteor.loginWithPassword)(username, password);
-		})
-		.then(resolve, reject);
-	});
 }

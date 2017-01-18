@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Card, Button, Input, Form, Divider, Header } from 'semantic-ui-react';
+import { Card, Button, Input, Form, Divider, Header, Icon } from 'semantic-ui-react';
 import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import wrapLink from '../components/wrap-link';
 import { Assessment, Assessments } from '../../api/assessments';
 import UserCard from '../components/user-card';
 import UsersFilterFetcher from '../components/users-filter-fetcher';
+import AddUserForm from '../forms/add-user-form';
 import { User } from '../../api/users';
 
 interface Props {
@@ -84,6 +85,7 @@ class UsersPage extends React.Component<Props, State> {
 			<div>
 				<Header as="h1">
 					Filter and Assess Users
+					{ <AddUserForm username={ this.state.filter } /> }
 				</Header>
 				{ this.renderUserForm() }
 				<UsersFilterFetcher

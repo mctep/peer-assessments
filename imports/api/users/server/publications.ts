@@ -9,14 +9,9 @@ Meteor.users.deny({
 	remove: (): boolean => true
 });
 
-Meteor.methods({
-	'accounts.isUsernameExists'(username: string): boolean {
-		return !!Accounts.findUserByUsername(username);
-	}
-});
-
-Accounts.onCreateUser((options: {}, user: User): User => {
+Accounts.onCreateUser((options: User, user: User): User => {
 	user.roles = ['user'];
+	user.profile = options.profile;
 	return user;
 });
 

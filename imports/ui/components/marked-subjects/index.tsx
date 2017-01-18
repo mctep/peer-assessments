@@ -26,7 +26,7 @@ interface Props {
 }
 
 interface MarkSetting {
-	// TODO try to import SemanticCOLOR (may be create issue)
+	// TODO try to import SemanticCOLOR type (may be create issue)
 	color: 'green' | 'olive' | 'yellow' | 'orange';
 	title: string;
 }
