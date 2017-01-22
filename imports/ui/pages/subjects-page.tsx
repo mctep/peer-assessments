@@ -5,7 +5,7 @@ import { Header, Divider } from 'semantic-ui-react';
 
 import AddSubjectForm, { AddSubjectFormData } from '../forms/add-subject-form';
 import { Subject, Subjects } from '../../api/subjects';
-import { insertSubject } from '../../api/subjects/methods';
+import { insertSubject, removeSubject } from '../../api/subjects/methods';
 import SubjectsFilterFetcher from '../components/subjects-filter-fetcher';
 
 interface State {
@@ -44,6 +44,10 @@ export default class SubjectsPage extends React.Component<{}, State> {
 		});
 	}
 
+	private handleSubjectRemove = (subject: Subject): void => {
+		removeSubject(subject);
+	}
+
 	public render(): JSX.Element {
 		return (
 			<div>
@@ -57,6 +61,7 @@ export default class SubjectsPage extends React.Component<{}, State> {
 				<SubjectsFilterFetcher
 					filter={ this.state.newSubjectName.trim() }
 					onListChange={ this.handleListChange }
+					onSubjectRemove={ this.handleSubjectRemove }
 				/>
 			</div>
 		);

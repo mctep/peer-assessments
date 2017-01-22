@@ -19,9 +19,6 @@ function wrapLink(to: string, link?: typeof Link): (props: MenuItemProps) => JSX
 class Layout extends React.Component<IWithUser, void> {
 	private static renderAdminMenu(): JSX.Element[] {
 		return [
-			<Menu.Item key="users" as={ wrapLink('/users') }>
-				Users
-			</Menu.Item>,
 			<Menu.Item key="subjects" as={ wrapLink('/subjects') }>
 				Subjects
 			</Menu.Item>

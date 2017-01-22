@@ -10,6 +10,7 @@ import { Subject, Subjects } from '../../api/subjects';
 
 interface InProps {
 	filter?: string;
+	onSubjectRemove?: (subject: Subject) => void;
 	onListChange?: (subjects: Subject[]) => void;
 }
 
@@ -40,7 +41,11 @@ class SubjectsFilterFetcher extends React.Component<InProps & SubsProps, void> {
 
 	public render(): JSX.Element {
 		return (
-			<SubjectList subjects={ this.props.subjects } removable />
+			<SubjectList
+				subjects={ this.props.subjects }
+				removable
+				onRemove={ this.props.onSubjectRemove }
+			/>
 		);
 	}
 }
