@@ -11,3 +11,7 @@ export interface User extends Meteor.User {
 	roles?: Role[];
 	password?: string;
 }
+
+export function getUserFullname(user: User): string {
+	return user.profile && user.profile.fullname || '';
+}

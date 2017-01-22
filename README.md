@@ -2,7 +2,7 @@
 
 ## Problems and TODOS
 
-* Make santize user creation!
+* Dig in to Semantic UI form serialization
 * I could not to use `meteor-simple-schema` with typings.
 * May be it better to use JSON-schema validation.
 * It is better to use some form builder for React. But I have not found any that statisfied me.

@@ -8,13 +8,12 @@ import {
 	Modal,
 	Form,
 	Button,
-	ButtonProps,
 	Icon,
 	Input,
 	Message
 } from 'semantic-ui-react';
 
-const ButtonPatched: React.ComponentClass<ButtonProps & { title?: string }> = Button;
+import PasswordInput from '../../components/password-input';
 
 export interface AddUserFormData {
 	username: string;
@@ -33,22 +32,6 @@ interface Props {
 	username?: string;
 	onSubmit?: (data: AddUserFormData) => void;
 	loading?: boolean;
-}
-
-const PASSWORD_LENGTH_DEFAULT: number = 12;
-const PASSWORD_CHARS_DEFAULT: string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_!#+/';
-function getRandomPassword(
-	length: number = PASSWORD_LENGTH_DEFAULT,
-	chars: string = PASSWORD_CHARS_DEFAULT
-): string {
-	let password: string = '';
-
-	while (length > 0) {
-		password += chars[Math.ceil(Math.random() * chars.length)];
-		length -= 1;
-	}
-
-	return password;
 }
 
 export default class AddUserFormModal extends React.Component<Props, State> {
@@ -129,12 +112,12 @@ export default class AddUserFormModal extends React.Component<Props, State> {
 		});
 	}
 
-	private handleGeneratePasswordClick = (): void => {
+	private handlePasswordChange = (password: string): void => {
 		this.setState({
 			...this.state,
 			data: {
 				...this.state.data,
-				password: getRandomPassword()
+				password
 			}
 		});
 	}
@@ -162,35 +145,13 @@ export default class AddUserFormModal extends React.Component<Props, State> {
 		);
 	}
 
-	private renderPasswordInput(): JSX.Element {
-		const action: JSX.Element = (
-			<ButtonPatched
-				type="button"
-				icon="setting"
-				title="Genearate Password"
-				onClick={ this.handleGeneratePasswordClick }
-			/>
-		);
-
-		return (
-			<Form.Field>
-				<label>Password</label>
-				<Input
-					type="text"
-					name="password"
-					value={ this.state.data.password }
-					onChange={ this.handleInputChange }
-					action={ action }
-				/>
-			</Form.Field>
-		);
-	}
-
 	public render(): JSX.Element {
 		const submitDisabled: boolean =
 			this.state.usernameChecking ||
 			this.state.usernameExists ||
-			this.props.loading;
+			this.props.loading ||
+			!this.state.data.username.trim() ||
+			!this.state.data.password.trim();
 
 		return (
 			<Modal
@@ -205,7 +166,10 @@ export default class AddUserFormModal extends React.Component<Props, State> {
 				<Modal.Content>
 					<Form onSubmit={ this.handleFormSubmit } warning loading={ this.props.loading }>
 						{ this.renderUsernameInput() }
-						{ this.renderPasswordInput() }
+						<Form.Field>
+							<label>Password</label>
+							<PasswordInput onChange={ this.handlePasswordChange } />
+						</Form.Field>
 						<Form.Field>
 							<label>Full Name</label>
 							<input

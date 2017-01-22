@@ -8,6 +8,7 @@ import UserCard from '../components/user-card';
 import UsersFilterFetcher from '../components/users-filter-fetcher';
 import AddUserForm from '../forms/add-user-form';
 import { User } from '../../api/users';
+import EditUserFormButton from '../forms/edit-user-form';
 
 interface Props {
 	assessments: Assessment[];
@@ -53,7 +54,7 @@ class UsersPage extends React.Component<Props, State> {
 	}
 
 	private renderUsers(): JSX.Element[] {
-		return this.state.users.map((user: Meteor.User) => (
+		return this.state.users.map((user: User) => (
 			<UserCard
 				key={ user._id }
 				user={ user }
@@ -63,6 +64,7 @@ class UsersPage extends React.Component<Props, State> {
 				<Button basic color="blue" type="button" as={ wrapLink(`/assess/${user.username}`) }>
 					Assess
 				</Button>
+				{ <EditUserFormButton user={ user } /> }
 			</UserCard>
 		));
 	}
