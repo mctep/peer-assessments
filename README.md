@@ -1,5 +1,15 @@
 # Peer Assessment Web Application
 
+## Development
+
+```bash
+$ git clone https://github.com/mctep/peer-assessments.git
+$ cd peer-assessments
+$ meteor npm install
+$ typings install
+$ npm start
+```
+
 ## Problems and TODOS
 
 * Dig in to Semantic UI form serialization
