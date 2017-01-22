@@ -14,7 +14,7 @@ registerPromisedMeteorMethod('insertSubject',
 	(name: string): string => {
 		name = name.trim();
 
-		if (!Roles.userIsInRole(this.userId, 'admin')) {
+		if (!Roles.userIsInRole(Meteor.user(), 'admin')) {
 			throw new AccessDeniedError();
 		}
 
