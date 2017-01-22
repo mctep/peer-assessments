@@ -1,14 +1,19 @@
 import * as React from 'react';
-import { Label, Icon } from 'semantic-ui-react';
+import { Label, Icon, LabelProps } from 'semantic-ui-react';
 
 import { Subject } from '../../api/subjects';
+
+type Colors = 'blue' | 'green' | 'olive' | 'yellow' | 'orange';
 
 interface Props {
 	subject: Subject;
 	removable?: boolean;
 	className?: string;
-	active?: boolean;
+	basic?: boolean;
+	color?: Colors;
+	detail?: React.ReactNode;
 	onRemoveButtonClick?: (subject: Subject) => void;
+	children?: React.ReactNode;
 }
 
 export default class SubjectComponent extends React.Component<Props, void> {
@@ -29,13 +34,21 @@ export default class SubjectComponent extends React.Component<Props, void> {
 	}
 
 	public render(): JSX.Element {
+		const detail: JSX.Element = this.props.detail ? (
+			<Label.Detail>
+				{ this.props.detail }
+			</Label.Detail>
+		) : null;
+
 		return (
 			<Label
-				basic={ !this.props.active }
-				color={ this.props.active ? 'blue' : null }
+				basic={ this.props.basic }
+				color={ this.props.color }
 				className={ this.props.className }
 			>
 				{ this.props.subject.name }
+				{ detail }
+				{ this.props.children }
 				{ this.renderRemoveButton() }
 			</Label>
 		);

@@ -5,6 +5,10 @@ import { createContainer } from 'meteor/react-meteor-data';
 import { User } from '../../api/users';
 import { Assessments, Assessment, IMarks } from '../../api/assessments';
 import { createEmptyAssessment, upsertAssessment } from '../../api/assessments/methods';
+import {
+	subscribeUserForAssessment,
+	subscribeAssessmentsForUser
+} from '../../api/assessments/publications';
 import withRouteParams from '../hocs/with-route-params';
 import Loader from '../components/loader';
 import MarksForm from '../forms/marks-form';
@@ -34,8 +38,8 @@ function subscribe(props: RouteParams & { router: IRouter }): IWithAssessmentUse
 		}
 	}
 
-	const userHandle: Meteor.SubscriptionHandle = Meteor.subscribe('userForAssessment', props.username, { onError });
-	const assessmentHandle: Meteor.SubscriptionHandle = Meteor.subscribe('assessmentForUser', props.username, { onError });
+	const userHandle: Meteor.SubscriptionHandle = subscribeUserForAssessment(props.username, { onError });
+	const assessmentHandle: Meteor.SubscriptionHandle = subscribeAssessmentsForUser(props.username, { onError });
 
 	const loading: boolean = !(userHandle.ready() && assessmentHandle.ready());
 

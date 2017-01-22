@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 import wrapLink from '../components/wrap-link';
 import { Assessment, Assessments } from '../../api/assessments';
+import { subscribeAssessments } from '../../api/assessments/publications';
 import UserCard from '../components/user-card';
 import UsersFilterFetcher from '../components/users-filter-fetcher';
 import AddUserForm from '../forms/add-user-form';
@@ -15,7 +16,7 @@ interface Props {
 }
 
 function subscribe(): Props {
-	Meteor.subscribe('assessments');
+	subscribeAssessments();
 
 	return {
 		assessments: Assessments.find().fetch()
@@ -36,11 +37,11 @@ class UsersPage extends React.Component<Props, State> {
 			filter: ''
 		};
 	}
-	private static getLeftAsessments(user: User, assessments: Assessment[]): Assessment[] {
+	private static getLeftAssessments(user: User, assessments: Assessment[]): Assessment[] {
 		return assessments.filter((assessment: Assessment) => assessment.who === user._id);
 	}
 
-	private static getReceivedAsessments(user: User, assessments: Assessment[]): Assessment[] {
+	private static getReceivedAssessments(user: User, assessments: Assessment[]): Assessment[] {
 		return assessments.filter((assessment: Assessment) => assessment.whom === user._id);
 	}
 
@@ -53,18 +54,44 @@ class UsersPage extends React.Component<Props, State> {
 		this.setState({ ...this.state, users });
 	}
 
+	private renderButtons(user: User): JSX.Element[] {
+		if (Roles.userIsInRole(Meteor.user(), 'admin')) {
+			return [
+				<Button
+					basic
+					key="assessments"
+					color="blue"
+					type="button"
+					as={ wrapLink(`/assessments/${user.username}`) }
+				>
+					Assessments
+				</Button>,
+				<EditUserFormButton key="edit" user={ user } />
+			];
+		}
+
+		return [
+			<Button
+				basic
+				key="assess"
+				color="blue"
+				type="button"
+				as={ wrapLink(`/assess/${user.username}`) }
+			>
+				Assess
+			</Button>
+		];
+	}
+
 	private renderUsers(): JSX.Element[] {
 		return this.state.users.map((user: User) => (
 			<UserCard
 				key={ user._id }
 				user={ user }
-				leftAssessments={ UsersPage.getLeftAsessments(user, this.props.assessments) }
-				receivedAssessments={ UsersPage.getReceivedAsessments(user, this.props.assessments) }
+				leftAssessments={ UsersPage.getLeftAssessments(user, this.props.assessments) }
+				receivedAssessments={ UsersPage.getReceivedAssessments(user, this.props.assessments) }
 			>
-				<Button basic color="blue" type="button" as={ wrapLink(`/assess/${user.username}`) }>
-					Assess
-				</Button>
-				{ <EditUserFormButton user={ user } /> }
+				{ this.renderButtons(user) }
 			</UserCard>
 		));
 	}

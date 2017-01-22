@@ -3,13 +3,14 @@ import { Meteor } from 'meteor/meteor';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import { Subject, Subjects } from '../../api/subjects';
+import { subscribeSubjects } from '../../api/subjects/publications';
 
 export interface IWithSubjects {
 	subjects: Subject[];
 }
 
 function subscribe(): IWithSubjects {
-	Meteor.subscribe('subjects');
+	subscribeSubjects();
 
 	return {
 		subjects: Subjects.find({}).fetch()

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import escapeRegexp = require('escape-string-regexp');
 import { User } from '../../api/users';
+import { subscribeUsers } from '../../api/users/publications';
 
 interface Props {
 	filter?: string;
@@ -13,7 +14,7 @@ interface SubsProps {
 }
 
 function subscribe(props: Props): SubsProps {
-	Meteor.subscribe('users');
+	subscribeUsers();
 
 	const query: { _id: {}, username?: RegExp } = {
 		_id: { $ne: Meteor.userId() }
@@ -34,6 +35,12 @@ function subscribe(props: Props): SubsProps {
 }
 
 class UsersFilterFetcher extends React.Component<Props & SubsProps, void> {
+	private componentDidMount(): void {
+		if (this.props.onChange) {
+			this.props.onChange(this.props.items);
+		}
+	}
+
 	private componentDidUpdate(): void {
 		if (this.props.onChange) {
 			this.props.onChange(this.props.items);

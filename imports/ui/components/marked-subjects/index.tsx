@@ -15,6 +15,7 @@ import { Subject } from '../../../api/subjects';
 import { Mark } from '../../../api/assessments';
 import SubjectList from './../subjects-list';
 
+import markSettings, { MarkSetting } from '../mark-settings';
 import './style.css';
 
 interface Props {
@@ -24,34 +25,6 @@ interface Props {
 	onAddSelectedSubjectsButtonClick?: (mark: Mark) => void;
 	onRemoveSubjectButtonClick?: (mark: Mark, subject: Subject) => void;
 }
-
-interface MarkSetting {
-	// TODO try to import SemanticCOLOR type (may be create issue)
-	color: 'green' | 'olive' | 'yellow' | 'orange';
-	title: string;
-}
-
-const markSettings: { [key: string]: MarkSetting} = {
-	exellent: {
-		title: 'Exellent',
-		color: 'green'
-	},
-
-	good: {
-		title: 'Good',
-		color: 'olive'
-	},
-
-	normal: {
-		title: 'Normal',
-		color: 'yellow'
-	},
-
-	bad: {
-		title: 'Bad',
-		color: 'orange'
-	}
-};
 
 export default class MarkedSubjects extends React.Component<Props, void> {
 	private handleAddSelectedSubjectsButtonClick = (): void => {

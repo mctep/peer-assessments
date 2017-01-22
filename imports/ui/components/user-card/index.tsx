@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Card, List, Icon, CardProps } from 'semantic-ui-react';
 import { User } from '../../../api/users';
 import { Assessment, IMarks, Mark } from '../../../api/assessments';
+import markSettings, { MarkSetting } from '../mark-settings';
 
 import './style.css';
 
@@ -19,29 +20,6 @@ interface AssessmentsCount {
 	bad: number;
 }
 
-interface MarkSetting {
-	color: 'green' | 'olive' | 'yellow' | 'orange';
-	icon: 'star' | 'smile' | 'meh' | 'frown';
-}
-
-const markSettings: {[key: string]: MarkSetting} = {
-	exellent: {
-		icon: 'star',
-		color: 'green'
-	},
-	good: {
-		icon: 'smile',
-		color: 'olive'
-	},
-	normal: {
-		icon: 'meh',
-		color: 'yellow'
-	},
-	bad: {
-		icon: 'frown',
-		color: 'orange'
-	}
-};
 
 export default class UserCard extends React.Component<Props & CardProps, void> {
 	private static countAssessmentsByMark(assessments: Assessment[]): AssessmentsCount {

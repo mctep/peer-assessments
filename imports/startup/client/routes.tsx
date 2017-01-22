@@ -9,6 +9,7 @@ import UsersPage from '../../ui/pages/users-page';
 import LoginPage from '../../ui/pages/login-page';
 import SubjectsPage from '../../ui/pages/subjects-page';
 import AssessmentUserPage from '../../ui/pages/assessment-user-page';
+import AssessmentAdminPage from '../../ui/pages/assessment-admin-page';
 import NotFoundPage from '../../ui/pages/not-found-page';
 
 export default class Routes extends React.Component<void, void> {
@@ -18,7 +19,8 @@ export default class Routes extends React.Component<void, void> {
 				<Route path="/">
 					<Route component={ Layout }>
 						<IndexRoute component={ authRequired(UsersPage) } />
-						<Route path="/assess/:username" component={ authRequired(AssessmentUserPage) } />
+						<Route path="/assess/:username" component={ authRequired(AssessmentUserPage, 'user') } />
+						<Route path="/assessments/:username" component={ authRequired(AssessmentAdminPage, 'admin') } />
 						<Route path="/subjects" component={ authRequired(SubjectsPage, 'admin') } />
 					</Route>
 				</Route>

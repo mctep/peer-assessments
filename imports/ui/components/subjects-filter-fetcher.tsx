@@ -7,6 +7,7 @@ import SubjectComponent from './subject';
 
 import SubjectList from './subjects-list';
 import { Subject, Subjects } from '../../api/subjects';
+import { subscribeSubjects } from '../../api/subjects/publications';
 
 interface InProps {
 	filter?: string;
@@ -19,7 +20,7 @@ interface SubsProps {
 }
 
 function subscribe(props: InProps): SubsProps {
-	Meteor.subscribe('subjects');
+	subscribeSubjects();
 
 	const query: { name?: RegExp } = {};
 

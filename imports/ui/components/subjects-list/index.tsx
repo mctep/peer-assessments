@@ -54,7 +54,8 @@ export default class SubjectsList extends React.Component<Props, void> {
 				<SubjectComponent
 					className="subjects-list__label"
 					subject={ subject }
-					active={ this.isSubjectSelected(subject) }
+					basic={ !this.isSubjectSelected(subject) }
+					color={ this.isSubjectSelected(subject) ? 'blue' : null }
 					removable={ this.props.removable }
 					onRemoveButtonClick={ this.props.onRemove }
 				/>

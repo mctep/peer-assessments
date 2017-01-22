@@ -13,5 +13,9 @@ export interface User extends Meteor.User {
 }
 
 export function getUserFullname(user: User): string {
-	return user.profile && user.profile.fullname || '';
+	return user && user.profile && user.profile.fullname || '';
+}
+
+export function getUserName(user: User): string {
+	return getUserFullname(user) || `@${user.username}`;
 }
