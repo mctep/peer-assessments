@@ -23,5 +23,4 @@ $ npm start
 * Research more about subscribtion error handling
 * Drag'n'Drop subject cards
 * Strange bug in chrome. On `/users` page enter to main input some text, click on `Add User` button, press `Escape` after modal shown, the button dissapeares.
-* Meteor methods return different types of result on server and client. It's incompatible with TypeScript.
 * Handle async opertations with cancellable promises has edge-cases when remount waiting components.
